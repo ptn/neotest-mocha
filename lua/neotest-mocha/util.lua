@@ -295,7 +295,7 @@ function M.parsed_json_to_results(data, tree, consoleOut)
   local tests = {}
 
   for _, test in pairs(data.tests) do
-    local testKey = test.file .. " " .. test.fullTitle
+    local testKey = string.gsub(test.file .. " " .. test.fullTitle, ":", "")
     local name = test.title
     local status
     local errors = {}
@@ -305,7 +305,7 @@ function M.parsed_json_to_results(data, tree, consoleOut)
     -- of a test. We need to find the test node in the tree by replacing the tokens
     -- with spaces and matching with the full title.
     for _, node in tree:iter() do
-      local nodeKey = node.id:gsub("::", " ")
+      local nodeKey = node.id:gsub("::", " "):gsub(":", "")
 
       if testKey == nodeKey then
         testNode = node
